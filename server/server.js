@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const passport = require('./strategies/sql.localstrategy');
 const sessionConfig = require('./modules/session-middleware');
+var _ = require('lodash');
 
 // Route includes
 const userRouter = require('./routes/user.router');

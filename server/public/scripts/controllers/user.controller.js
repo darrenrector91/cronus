@@ -8,4 +8,15 @@ myApp.controller('UserController', ['UserService', function (UserService) {
     self.saveUserInfo = function (data) {
         UserService.saveUserInfo(data);
     };
+
+    // Service to add item
+    self.newItem = UserService.newItem;
+    self.addItem = function (data) {
+        _.forEach(data, function (o) {
+            console.log(o.time_in);
+
+        });
+        UserService.addItem(data);
+        self.newItem = '';
+    };
 }]);

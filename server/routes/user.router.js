@@ -74,4 +74,35 @@ router.get('/logout', (req, res) => {
     res.sendStatus(200);
 });
 
+router.post('/addItem', function (req, res) {
+    console.log('in POST router');
+    if (req.isAuthenticated()) {
+        //add catch event to user data table
+        const queryText = `INSERT INTO timecard ( 
+        weekStartDate,
+        time_in,
+        time_out,
+        workday) 
+        VALUES ($1, $2, $3, $4)`;
+        pool.query(queryText, [
+                req.body.weekStartDate,
+                req.body.time_in,
+                req.body.time_out,
+                req.body.workday
+            ])
+            .then((result) => {
+                console.log('result:', result);
+                res.send(result);
+            })
+            // erorr handling
+            .catch((err) => {
+                console.log('error:', err);
+                res.sendStatus(500);
+            });
+    } else {
+        // failure best handled on the server. do redirect here.
+        res.sendStatus(403);
+    }
+});
+
 module.exports = router;

@@ -32,6 +32,19 @@ myApp.service("UserService", ["$http", "$location",
                 self.getuser();
                 $location.path("/home");
             });
-        }
+        };
+
+        // Send item list to server
+        self.addItem = function (data) {
+            console.log("service adding data", data);
+            return $http
+                .post("/api/user/addItem", data)
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (err) {
+                    console.log('error on post request - adding item', err);
+                });
+        }; //end add item
     }
 ]);
