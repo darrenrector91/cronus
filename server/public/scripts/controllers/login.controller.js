@@ -5,7 +5,8 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
         username: '',
         first_name: '',
         last_name: '',
-        password: ''
+        password: '',
+        job_position: ''
     };
     self.message = '';
 
@@ -18,7 +19,6 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
                 function (response) {
                     if (response.status == 200) {
                         console.log('success: ', response.data);
-                        // location works with SPA (ng-route)
                         $location.path('/user');
                     } else {
                         console.log('failure error: ', response);
@@ -36,11 +36,14 @@ myApp.controller('LoginController', ['$http', '$location', 'UserService', functi
         if (self.user.username === '' ||
             self.user.password === '' ||
             self.user.first_name === '' ||
-            self.user.last_name === '') {
+            self.user.last_name === '' ||
+            self.user.job_position === '') {
             self.message = "Choose a username and password!";
         } else {
             console.log('sending to server...', self.user);
             $http.post('/api/user/register', self.user).then(function (response) {
+                    console.log(response);
+
                     console.log('success');
                     $location.path('/home');
                 },

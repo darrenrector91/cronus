@@ -24,26 +24,30 @@ router.post('/register', (req, res, next) => {
     const password = encryptLib.encryptPassword(req.body.password);
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
+    const job_position = req.body.job_position;
 
     var saveUser = {
         username: req.body.username,
         password: encryptLib.encryptPassword(req.body.password),
         first_name: req.body.first_name,
-        last_name: req.body.last_name
+        last_name: req.body.last_name,
+        job_position: req.body.job_position
     };
     // console.log('new user:', saveUser);
     pool.query(`INSERT INTO users
     (username,
       password,
       first_name,
-      last_name)
+      last_name,
+      job_position)
       VALUES
-      ($1, $2, $3, $4)
+      ($1, $2, $3, $4, $5)
       RETURNING id`,
         [saveUser.username,
             saveUser.password,
             saveUser.first_name,
-            saveUser.last_name
+            saveUser.last_name,
+            saveUser.job_position
         ],
         (err, result) => {
             if (err) {

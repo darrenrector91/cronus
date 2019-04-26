@@ -27,6 +27,10 @@
                 <label class="editLabel">Last name</label>
                 <input ng-model="vm.user.last_name">
               </md-input-container>
+              <md-input-container class="md-block" flex-gt-sm required>
+                <label class="editLabel">Position</label>
+                <input ng-model="vm.user.job_position">
+              </md-input-container>
             </div>
             <div layout-gt-sm="row" layout-align="center center">
               <a ng-href="#!user">
