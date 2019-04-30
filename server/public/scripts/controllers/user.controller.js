@@ -1,22 +1,35 @@
 myApp.controller('UserController', ['UserService', function (UserService) {
     //console.log('UserController created');
-    var self = this;
-    self.userService = UserService;
-    self.userObject = UserService.userObject;
+    var vm = this;
+    vm.userService = UserService;
+    vm.userObject = UserService.userObject;
+    vm.tableData = UserService.tableData;
+    vm.weekStart = UserService.weekStart;
+    vm.getSelectWeek = UserService.getSelectWeek;
 
     // saving user data 
-    self.saveUserInfo = function (data) {
+    vm.saveUserInfo = function (data) {
         UserService.saveUserInfo(data);
     };
 
     // Service to add item
-    self.newItem = UserService.newItem;
-    self.addItem = function (data) {
-        _.forEach(data, function (o) {
-            console.log(o.time_in);
+    vm.newItem = UserService.newItem;
 
-        });
+    vm.addItem = function (data) {
         UserService.addItem(data);
-        self.newItem = '';
+        vm.newItem = '';
     };
+
+    vm.getStartDate = function (data) {
+        UserService.getStartDate(data);
+    };
+
+    // Service to delete item
+    vm.deleteItem = function (id) {
+        UserService.deleteItem(id);
+    };
+
+    vm.editTimeEntry = function (id) {
+        UserService.editTimeEntry(id);
+    }
 }]);

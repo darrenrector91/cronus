@@ -14,69 +14,99 @@
                 <div class="row">New Hope, MN 55428</div>
             </div>
             <div class="col-8">
-                <div class="row">Employee name: Darren Rector</div>
+                <div class="row">
+                    Employee name: {{ vm.userObject.first_name }}
+                    {{ vm.userObject.last_name }}
+                </div>
                 <div class="row">Manager name: Kathy Hoyle</div>
-                <div class="row">Week starting:<span><input type="date" ng-model="vm.newItem.weekStartDate"></span>
+                <div class="row">
+                    Week starting:<span><input class="inputText" type="date"
+                            ng-model="vm.newItem.week_start_date" /></span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="well">
-        <md-content>
-            <form id="timecard-form" layout-align="center center">
-                <div layout-gt-sm="row" layout-align="center center">
-                    <md-input-container class="timecard-input weekday-input">
-                        <label>Day of the Week</label>
-                        <md-datepicker ng-model="vm.newItem.workday" name="dateField"
-                            style="font-size: 40px; width: 200px; margin-right:30px; margin-top: 30px;">
-                        </md-datepicker>
-                    </md-input-container>
-                    <md-input-container class="timecard-input time_in-input">
-                        <label>Time In</label>
-                        <input type="time" name="time_in" ng-model="vm.newItem.time_in"
-                            style="font-size: 30px; width: 200px; margin-right:30px;">
-                    </md-input-container>
-                    <md-input-container class="timecard-input breaks-input">
-                        <label>Breaks</label>
-                        <input type="time" ng-model="vm.newItem.breaks"
-                            style="font-size: 30px; width: 200px; margin-right:30px;">
-                    </md-input-container>
-                    <md-input-container class="timecard-input time_out-input">
-                        <md-input-container>
-                            <label>Time Out</label>
-                            <input type="time" name="time_out" ng-model="vm.newItem.time_out"
-                                style="font-size: 30px; width: 200px; margin-right:30px;">
-                        </md-input-container>
-                    </md-input-container>
-                    <md-button class="md-raised md-accent" style="margin-left:30px;" ng-click="vm.addItem(vm.newItem)">
-                        Submit</md-button>
+    <form>
+        <div class="form-row timecardComponents">
+            <div class="col-3">
+                <label>Day of Week</label>
+                <input ng-model="vm.newItem.day_of_week" type="date" class="form-control" style="
+                        font-size: 30px;
+                    " />
+            </div>
+            <div class="col-3">
+                <label>Time In</label>
+                <input ng-model="vm.newItem.time_in" type="time" class="form-control" style="
+                font-size: 30px;
+            " />
+            </div>
+            <div class="col-3">
+                <label>Breaks</label>
+                <div class="input-group mb-3">
+                    <select class="custom-select" id="inputGroupSelect01" ng-model="vm.newItem.break_time"
+                        style="font-size: 30px;height: 61px;">
+                        <option selected>Choose...</option>
+                        <option value="15">15</option>
+                        <option value="30">30</option>
+                        <option value="45">45</option>
+                        <option value="60">60</option>
+                    </select>
                 </div>
-            </form>
-
-        </md-content>
-    </div>
-
-    <div class="well well-lg">
+            </div>
+            <div class="col-3">
+                <label>Time Out</label>
+                <input ng-model="vm.newItem.time_out" type="time" class="form-control" style="
+                font-size: 30px;
+            " />
+            </div>
+            <div class="col-3 timeInputButton">
+                <button type="button" class="btn btn-outline-primary btn-block" ng-click="vm.addItem(vm.newItem)"
+                    style="text-align: center; font-size: 25px; font-weight: bold;">
+                    Submit
+                </button>
+            </div>
+        </div>
+        <div class="col-3 weekSelectContainer">
+            <label class="weekSelectLabel">View Week</label>
+            <div class="input-group mb-3">
+                <select class="weekSelectDropdown" ng-model="vm.startDate" ng-change="vm.getStartDate(vm.startDate)">
+                    <option>--Choose Week to View--</option>
+                    <option ng-repeat="option in vm.weekStart.list" value="{{option.week_start_date}}">
+                        {{option.week_start_date | date: "MM-dd-yyyy"}}</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="well well-lg" ng-model="vm.selectedData" ng-show="vm.getStartDate">
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Day of Week</th>
+                        <th>Week Starting</th>
+                        <th>Date</th>
                         <th>Time in</th>
                         <th>Breaks(minutes)</th>
                         <th>Time out</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody ng-repeat="select in vm.getSelectWeek.list track by $index">
                     <tr>
-                        <td>4/25/2019</td>
-                        <td>8:30</td>
-                        <td>0</td>
-                        <td>4:00</td>
+                        <td>{{ select.week_start_date | date: "MM-dd-yyyy" }}</td>
+                        <td>{{ select.day_of_week | date: "MM-dd-yyyy" }}</td>
+                        <td>{{ select.time_in | date: "h:mma" }}</td>
+                        <td>{{ select.break_time }}</td>
+                        <td>{{ select.time_out | date: "h:mma" }}</td>
+                        <td>
+                            <button class="tableEditBtn" ng-click="vm.editTimeEntry(select.timecard_id)">Edit</button>
+                        </td>
+                        <td>
+                            <button class="tableDeleteBtn" ng-click="vm.deleteItem(select.timecard_id)">Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>

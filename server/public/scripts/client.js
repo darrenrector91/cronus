@@ -5,12 +5,11 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngMessages'])
             .warnPalette('red')
             .accentPalette('blue')
             .backgroundPalette('grey')
-            .dark();
+        //.dark();
     });
 
 /// Routes ///
 myApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    // console.log('myApp -- config')
     $routeProvider
         .when('/', {
             redirectTo: 'home'

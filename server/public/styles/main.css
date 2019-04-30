@@ -5,3 +5,65 @@
 md-input-container {
     margin-right: 30px !important;
 }
+
+form {
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.timeInputButton {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    position: relative;
+    left: 680px;
+}
+
+.inputText {
+    font-size: 30px;
+}
+
+.timecardComponents {
+    font-size: 20px;
+}
+
+.well {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.weekSelectBtn {
+    margin-left: 20px;
+}
+
+.weekSelectContainer {
+    position: relative;
+    right: 10px;
+}
+
+.weekSelectDropdown {
+    width: 435px;
+    height: 60px;
+    font-size: 20px;
+}
+
+.weekSelectLabel {
+    font-size: 20px;
+}
+
+.modal {
+    height: 1100px;
+    width: auto;
+    padding: 5px;
+    background: #2b5876;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #4e4376, #2b5876);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #4e4376, #2b5876);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.banner-title {
+    font-size: 30px !important;
+}

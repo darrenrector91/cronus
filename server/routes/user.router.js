@@ -4,21 +4,14 @@ const userStrategy = require('../strategies/sql.localstrategy');
 const pool = require('../modules/pool.js');
 const router = express.Router();
 
-// Handles Ajax request for user information if user is authenticated
 router.get('/', (req, res) => {
-    // check if logged in
     if (req.isAuthenticated()) {
-        // send back user object from database
         res.send(req.user);
     } else {
-        // failure best handled on the server. do redirect here.
         res.sendStatus(403);
     }
 });
 
-// Handles POST request with new user data
-// The only thing different from this and every other post we've seen
-// is that the password gets encrypted before being inserted
 router.post('/register', (req, res, next) => {
     const username = req.body.username;
     const password = encryptLib.encryptPassword(req.body.password);
@@ -59,50 +52,149 @@ router.post('/register', (req, res, next) => {
         });
 });
 
-// Handles login form authenticate/login POST
-// userStrategy.authenticate('local') is middleware that we run on this route
-// this middleware will run our POST if successful
-// this middleware will send a 404 if not successful
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
     res.sendStatus(200);
 });
-
-// clear all server session information about this user
 router.get('/logout', (req, res) => {
-    // Use passport's built-in method to log out the user
     req.logout();
     res.sendStatus(200);
+});
+
+router.get('/getTableData', (req, res) => {
+    const queryText =
+        `SELECT
+        day_of_week,
+        break_time,
+        week_start_date,
+        time_in,
+        time_out
+        FROM timecard
+        ORDER BY
+        week_start_date ASC`;
+    pool.query(queryText)
+        .then((result) => {
+            console.log('table data results:', result);
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log('error making query:', err);
+            res.sendStatus(500);
+        });
+});
+
+router.get('/getWeekStart', (req, res) => {
+    const queryText =
+        `SELECT DISTINCT
+        week_start_date
+        FROM
+        timecard
+        ORDER BY
+        week_start_date ASC`;
+    pool.query(queryText)
+        .then((result) => {
+            console.log(result);
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log('error making getWeekStart query:', err);
+            res.sendStatus(500);
+        })
 });
 
 router.post('/addItem', function (req, res) {
     console.log('in POST router');
     if (req.isAuthenticated()) {
-        //add catch event to user data table
         const queryText = `INSERT INTO timecard ( 
-        weekStartDate,
+        week_start_date,
         time_in,
         time_out,
-        workday) 
-        VALUES ($1, $2, $3, $4)`;
+        day_of_week,
+        break_time) 
+        VALUES ($1, $2, $3, $4, $5)`;
         pool.query(queryText, [
-                req.body.weekStartDate,
+                req.body.week_start_date,
                 req.body.time_in,
                 req.body.time_out,
-                req.body.workday
+                req.body.day_of_week,
+                req.body.break_time
             ])
             .then((result) => {
                 console.log('result:', result);
                 res.send(result);
             })
-            // erorr handling
             .catch((err) => {
                 console.log('error:', err);
                 res.sendStatus(500);
             });
     } else {
-        // failure best handled on the server. do redirect here.
         res.sendStatus(403);
-    }
+    };
+});
+
+router.get('/getSelectWeek/:data', function (req, res) {
+    console.log('in get event');
+    const queryText =
+        `SELECT 
+        timecard_id,
+        day_of_week, 
+        user_id
+        break_time, 
+        week_start_date, 
+        time_in, 
+        time_out 
+        FROM 
+        timecard 
+        WHERE 
+        week_start_date = $1`;
+    pool.query(queryText, [req.params.data])
+        .then((result) => {
+            console.log(result);
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log('error:', err);
+            res.sendStatus(500);
+        });
+});
+
+router.get('/editTimeEntry/:data', function (req, res) {
+    console.log('in get event');
+    const queryText =
+        `SELECT 
+        timecard_id,
+        day_of_week, 
+        user_id
+        break_time, 
+        week_start_date, 
+        time_in, 
+        time_out 
+        FROM 
+        timecard 
+        WHERE 
+        timecard_id = $1`;
+    pool.query(queryText, [req.params.data])
+        .then((result) => {
+            console.log(result);
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log('error:', err);
+            res.sendStatus(500);
+        });
+});
+
+router.delete('/deleteItem/:id', function (req, res) {
+    // console.log('in router.delete');
+    const queryText = 'DELETE FROM timecard WHERE timecard_id = $1';
+    pool.query(queryText, [req.params.id])
+        .then((result) => {
+            console.log('result:', result.rows);
+            res.sendStatus(200);
+        })
+        .catch((err) => {
+            console.log('error:', err);
+            res.sendStatus(500);
+        });
 });
 
 module.exports = router;
