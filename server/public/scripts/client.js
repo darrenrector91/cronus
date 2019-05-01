@@ -9,7 +9,7 @@ var myApp = angular.module('myApp', ['ngRoute', 'ngMaterial', 'ngMessages'])
     });
 
 /// Routes ///
-myApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+myApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider, $mdDialog, $mdMedia) {
     $routeProvider
         .when('/', {
             redirectTo: 'home'

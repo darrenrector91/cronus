@@ -99,7 +99,9 @@
                         <td>{{ select.break_time }}</td>
                         <td>{{ select.time_out | date: "h:mma" }}</td>
                         <td>
-                            <button class="tableEditBtn" ng-click="vm.editTimeEntry(select.timecard_id)">Edit</button>
+                            <md-button class="md-primary md-raised"
+                                ng-click="vm.showAdvanced($event, select.timecard_id)">Edit</md-button>
+                            <!-- <button class="tableEditBtn" ng-click="vm.editTimeEntry(select.timecard_id)">Edit</button> -->
                         </td>
                         <td>
                             <button class="tableDeleteBtn" ng-click="vm.deleteItem(select.timecard_id)">Delete</button>
@@ -109,4 +111,53 @@
             </table>
         </div>
     </div>
+    <script type="text/ng-template" id="dialog1.tmpl.html" class="editModal">
+        <md-dialog>
+              <md-dialog-content>
+                    <form ng-repeat = "select in vm.modalData track by $index">
+                            <div class="form-row timecardComponents">
+                                <div class="col-3">
+                                    <label>Day of Week</label>
+
+                                    <input ng-model="select.day_of_week"
+                                    type="date" class="form-control" style="
+                                            font-size: 30px;
+                                        " />
+                                </div>
+                                <div class="col-3">
+                                    <label>Time In</label>
+                                    <input ng-model="vm.newItem.time_in" type="time" class="form-control" style="
+                                    font-size: 30px;
+                                " />
+                                </div>
+                                <div class="col-3">
+                                    <label>Breaks</label>
+                                    <div class="input-group mb-3">
+                                        <select class="custom-select" id="inputGroupSelect01" ng-model="vm.newItem.break_time"
+                                            style="font-size: 30px;height: 61px;">
+                                            <option selected>Choose...</option>
+                                            <option value="15">15</option>
+                                            <option value="30">30</option>
+                                            <option value="45">45</option>
+                                            <option value="60">60</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label>Time Out</label>
+                                    <input ng-model="vm.newItem.time_out" type="time" class="form-control" style="
+                                    font-size: 30px;
+                                " />
+                                </div>
+                                <div class="col-3 modalEditBtn">
+                                    <button type="button" class="btn btn-outline-primary btn-block" ng-click="vm.modalSubmit(vm.newItem)"
+                                        style="text-align: center; font-size: 25px; font-weight: bold;">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+              </md-dialog-content>
+          </md-dialog>
+        </script>
 </div>

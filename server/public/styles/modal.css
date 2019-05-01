@@ -43,3 +43,16 @@
 .mapModalHeader h3 {
     font-size: 25px;
 }
+
+#dialogContent_0 {
+    padding: 25px;
+    width: 1200px;
+}
+
+.modalEditBtn {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    position: relative;
+    left: 392px;
+}

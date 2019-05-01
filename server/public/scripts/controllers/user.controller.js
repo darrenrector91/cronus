@@ -1,4 +1,4 @@
-myApp.controller('UserController', ['UserService', function (UserService) {
+myApp.controller('UserController', ['UserService', '$mdDialog', function (UserService, $mdDialog) {
     //console.log('UserController created');
     var vm = this;
     vm.userService = UserService;
@@ -29,7 +29,22 @@ myApp.controller('UserController', ['UserService', function (UserService) {
         UserService.deleteItem(id);
     };
 
-    vm.editTimeEntry = function (id) {
-        UserService.editTimeEntry(id);
-    }
+    // vm.editTimeEntry = function (id) {
+    //     UserService.editTimeEntry(id);
+    // };
+
+    vm.showAdvanced = function (ev, id) {
+        UserService.showAdvanced(id);
+        $mdDialog.show({
+            controller: function () {
+                return self;
+            },
+            controllerAs: 'vm',
+            templateUrl: 'dialog1.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        })
+    };
+
 }]);
